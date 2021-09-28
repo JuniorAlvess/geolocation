@@ -5,7 +5,26 @@ function App() {
   // var watchId;
   let target = document.getElementById('target');
 
-  const getLocalization = () => {
+  let options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0
+  };
+  
+  function success(pos) {
+    var crd = pos.coords;
+  
+    console.log('Your current position is:');
+    console.log(`Latitude : ${crd.latitude}`);
+    console.log(`Longitude: ${crd.longitude}`);
+    console.log(`More or less ${crd.accuracy} meters.`);
+  }
+
+  function error(err) {
+    console.warn(`ERROR(${err.code}): ${err.message}`);
+  }
+
+  const getLocalization = (success, error, options) => {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(function (location) {
         // appendLocation(location, 'fetched');
@@ -34,7 +53,7 @@ function App() {
       </div>
       {
         location !== undefined && (
-          <iframe src={`https://maps.google.com/maps?&z=15&q=${location.coords.latitude}+${location.coords.longitude}&output=embed`} width="100%" height="500"></iframe>
+          <iframe src={`https://maps.google.com/maps?&z=15&q=${location.coords.latitude},${location.coords.longitude}&output=embed`} width="100%" height="500"></iframe>
         )
       }
     </>
